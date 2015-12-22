@@ -5,7 +5,7 @@
 <checkstyle-metadata>
     <rule-group-metadata name="%cthing.group" priority="1600">
         <rule-metadata internal-name="LogDeclaration" name="%logdeclaration.name" parent="TreeWalker" singleton="true">
-            <alternative-name internal-name="com.cthing.checkstyle.checks.LogDeclarationCheck"/>
+            <alternative-name internal-name="org.cthing.checkstyle.checks.LogDeclarationCheck"/>
             <description>%logdeclaration.desc</description>
             <message-key key="logdeclaration.badname"/>
             <message-key key="logdeclaration.badmodifier"/>
@@ -18,14 +18,14 @@
         </rule-metadata>
 
         <rule-metadata internal-name="TestMethodDeclaration" name="%testmethoddeclaration.name" parent="TreeWalker" singleton="true">
-            <alternative-name internal-name="com.cthing.checkstyle.checks.TestMethodDeclarationCheck"/>
+            <alternative-name internal-name="org.cthing.checkstyle.checks.TestMethodDeclarationCheck"/>
             <description>%testmethoddeclaration.desc</description>
             <message-key key="testmethoddeclaration.badreturn"/>
             <message-key key="testmethoddeclaration.badscope"/>
         </rule-metadata>
 
         <rule-metadata internal-name="SpringDaoAnnotation" name="%springdaoannotation.name" parent="TreeWalker" singleton="true">
-            <alternative-name internal-name="com.cthing.checkstyle.checks.SpringDaoAnnotationCheck"/>
+            <alternative-name internal-name="org.cthing.checkstyle.checks.SpringDaoAnnotationCheck"/>
             <description>%springdaoannotation.desc</description>
             <property-metadata name="includePattern" datatype="Regex" default-value="^.*DaoImpl$">
                 <description>%springdaoannotation.includepattern.desc</description>
