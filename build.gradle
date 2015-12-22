@@ -1,0 +1,108 @@
+import java.text.SimpleDateFormat
+
+// This project is consumed by infrastructure bootstrap code. Therefore it does not use any
+// C Thing Software Gradle plugins and is in the org.cthing domain so it can be consumed as
+// a third party dependency.
+
+boolean isOnCIServer() {
+    System.getenv('BUILD_NUMBER') && System.getenv('EXECUTOR_NUMBER')
+}
+
+int countRevisions(final Project project) {
+    project.rootProject.file('.git').exists() ?
+            Integer.parseInt(new ProcessBuilder('bash', '-c', 'git rev-list HEAD | wc -l')
+                                     .directory(project.rootDir).start().text.trim()) : 0
+}
+
+apply plugin: 'java'
+apply plugin: 'checkstyle'
+apply plugin: 'findbugs'
+apply plugin: 'jacoco'
+apply plugin: 'maven-publish'
+
+ext.buildNumber = onCIServer ? Integer.toString(countRevisions(project)): '0'
+version = "1.0.0.${buildNumber}"
+group = 'org.cthing'
+
+checkstyle {
+    toolVersion = '6.13'
+    ignoreFailures = false
+    configFile = project.file('dev/checkstyle/checkstyle.xml')
+    configProperties['config_loc'] = project.file('dev/checkstyle')
+    showViolations = true
+}
+
+dependencies {
+    compile "com.puppycrawl.tools:checkstyle:${checkstyle.toolVersion}"
+
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.assertj:assertj-core:3.2.0'
+}
+
+compileJava {
+    options.compilerArgs += '-Werror'
+}
+
+jar {
+    manifest {
+        attributes('Implementation-Title': project.name,
+                   'Implementation-Vendor': 'C Thing Software',
+                   'Implementation-Version': project.version)
+    }
+}
+
+javadoc {
+    options {
+        breakIterator = true
+        encoding = 'UTF-8'
+        bottom = "Copyright &copy; ${new SimpleDateFormat('yyyy', Locale.ENGLISH).format(new Date())} C Thing Software. All rights reserved."
+        memberLevel = JavadocMemberLevel.PUBLIC
+        outputLevel = JavadocOutputLevel.QUIET
+    }
+}
+
+findbugs {
+    toolVersion = '3.0.1'
+    ignoreFailures = false
+    effort = 'max'
+    reportLevel = 'medium'
+    excludeFilter = project.file('dev/findbugs/suppressions.xml')
+    sourceSets = [sourceSets.main]
+}
+
+jacoco {
+    toolVersion = '0.7.5.201505241946'
+}
+
+jacocoTestReport {
+    dependsOn 'test'
+    reports {
+        xml.enabled false
+        csv.enabled false
+        html.enabled true
+        html.destination new File(buildDir, 'reports/jacoco')
+    }
+}
+
+test {
+    jacoco {
+        append = false
+    }
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+    repositories {
+        maven {
+            url project.nexusReleasesUrl
+            credentials {
+                username = project.nexusUser
+                password = project.nexusPassword
+            }
+        }
+    }
+}

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE checkstyle-metadata
+    PUBLIC "-//eclipse-cs//DTD Check Metadata 1.1//EN"
+    "http://eclipse-cs.sourceforge.net/dtds/checkstyle-metadata_1_1.dtd">
+<checkstyle-metadata>
+    <rule-group-metadata name="%cthing.group" priority="1600">
+        <rule-metadata internal-name="LogDeclaration" name="%logdeclaration.name" parent="TreeWalker" singleton="true">
+            <alternative-name internal-name="com.cthing.checkstyle.checks.LogDeclarationCheck"/>
+            <description>%logdeclaration.desc</description>
+            <message-key key="logdeclaration.badname"/>
+            <message-key key="logdeclaration.badmodifier"/>
+            <message-key key="logdeclaration.assignment"/>
+            <message-key key="logdeclaration.badtype"/>
+            <message-key key="logdeclaration.missingcall"/>
+            <message-key key="logdeclaration.missingclass"/>
+            <message-key key="logdeclaration.missingclassname"/>
+            <message-key key="logdeclaration.mismatchedclass"/>
+        </rule-metadata>
+
+        <rule-metadata internal-name="TestMethodDeclaration" name="%testmethoddeclaration.name" parent="TreeWalker" singleton="true">
+            <alternative-name internal-name="com.cthing.checkstyle.checks.TestMethodDeclarationCheck"/>
+            <description>%testmethoddeclaration.desc</description>
+            <message-key key="testmethoddeclaration.badreturn"/>
+            <message-key key="testmethoddeclaration.badscope"/>
+        </rule-metadata>
+
+        <rule-metadata internal-name="SpringDaoAnnotation" name="%springdaoannotation.name" parent="TreeWalker" singleton="true">
+            <alternative-name internal-name="com.cthing.checkstyle.checks.SpringDaoAnnotationCheck"/>
+            <description>%springdaoannotation.desc</description>
+            <property-metadata name="includePattern" datatype="Regex" default-value="^.*DaoImpl$">
+                <description>%springdaoannotation.includepattern.desc</description>
+            </property-metadata>
+            <property-metadata name="excludePattern" datatype="Regex" default-value="^Abstract.+$">
+                <description>%springdaoannotation.excludepattern.desc</description>
+            </property-metadata>
+            <message-key key="springdaoannotation.missingclassrepository"/>
+            <message-key key="springdaoannotation.missingclasstransactional"/>
+            <message-key key="springdaoannotation.missingmethodtransactional"/>
+        </rule-metadata>
+    </rule-group-metadata>
+</checkstyle-metadata>
