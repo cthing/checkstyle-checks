@@ -138,7 +138,7 @@ public abstract class AbstractCheckTestSupport {
                     }
                 } else {
                     for (int i = 0; i < expectedLines.length; i++) {
-                        final String expected = messageFileName + ":" + expectedLines[i];
+                        final String expected = "[ERROR] " + messageFileName + ":" + expectedLines[i];
                         final String actual = reader.readLine();
                         assertThat(actual).as("error message " + i).isEqualTo(expected);
                     }

@@ -40,10 +40,10 @@ public class SpringDaoAnnotationCheckTest extends AbstractCheckTestSupport {
         final DefaultConfiguration checkConfig = createCheckConfig(SpringDaoAnnotationCheck.class);
 
         final String[] expected = {
-                "36: error: Class must be annotated with @Repository.",
-                "36: error: Class must be annotated with @Transactional(readOnly = true).",
-                "111: error: Method must be annotated with @Transactional(readOnly = false).",
-                "136: error: Method must be annotated with @Transactional(readOnly = false).",
+                "36: Class must be annotated with @Repository. [SpringDaoAnnotation]",
+                "36: Class must be annotated with @Transactional(readOnly = true). [SpringDaoAnnotation]",
+                "111: Method must be annotated with @Transactional(readOnly = false). [SpringDaoAnnotation]",
+                "136: Method must be annotated with @Transactional(readOnly = false). [SpringDaoAnnotation]",
         };
 
         verify(checkConfig, getPath("MissingAnnotationsDaoImpl.java"), expected);
@@ -54,9 +54,9 @@ public class SpringDaoAnnotationCheckTest extends AbstractCheckTestSupport {
         final DefaultConfiguration checkConfig = createCheckConfig(SpringDaoAnnotationCheck.class);
 
         final String[] expected = {
-                "36: error: Class must be annotated with @Transactional(readOnly = true).",
-                "113: error: Method must be annotated with @Transactional(readOnly = false).",
-                "139: error: Method must be annotated with @Transactional(readOnly = false).",
+                "36: Class must be annotated with @Transactional(readOnly = true). [SpringDaoAnnotation]",
+                "113: Method must be annotated with @Transactional(readOnly = false). [SpringDaoAnnotation]",
+                "139: Method must be annotated with @Transactional(readOnly = false). [SpringDaoAnnotation]",
         };
 
         verify(checkConfig, getPath("IncorrectAnnotationsDaoImpl.java"), expected);

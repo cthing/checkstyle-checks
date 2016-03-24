@@ -19,10 +19,10 @@ public class TestMethodDeclarationCheckTest extends AbstractCheckTestSupport {
         final DefaultConfiguration checkConfig = createCheckConfig(TestMethodDeclarationCheck.class);
 
         final String[] expected = {
-                "22: error: Test method must have void return type.",
-                "27: error: Test method must be a public instance method.",
-                "31: error: Test method must be a public instance method.",
-                "35: error: Test method must be a public instance method.",
+                "22: Test method must have void return type. [TestMethodDeclaration]",
+                "27: Test method must be a public instance method. [TestMethodDeclaration]",
+                "31: Test method must be a public instance method. [TestMethodDeclaration]",
+                "35: Test method must be a public instance method. [TestMethodDeclaration]",
         };
 
         verify(checkConfig, getPath("TestMethodDeclaration.java"), expected);

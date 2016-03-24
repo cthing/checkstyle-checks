@@ -19,13 +19,13 @@ public class LogDeclarationCheckTest extends AbstractCheckTestSupport {
         final DefaultConfiguration checkConfig = createCheckConfig(LogDeclarationCheck.class);
 
         final String[] expected = {
-                "18: error: Logger variable must be declared private static final.",
-                "22: error: Declared type is not LoggerFactory, check that SLF4J is being used.",
-                "26: error: Logger must be assigned where declared.",
-                "30: error: Class name passed to getLogger method does not match enclosing class name.",
-                "34: error: Class name passed to getLogger method does not end in .class.",
-                "38: error: Logger variable must be named LOG.",
-                "42: error: getLogger method is not called, check that SLF4J is being used.",
+                "18: Logger variable must be declared private static final. [LogDeclaration]",
+                "22: Declared type is not LoggerFactory, check that SLF4J is being used. [LogDeclaration]",
+                "26: Logger must be assigned where declared. [LogDeclaration]",
+                "30: Class name passed to getLogger method does not match enclosing class name. [LogDeclaration]",
+                "34: Class name passed to getLogger method does not end in .class. [LogDeclaration]",
+                "38: Logger variable must be named LOG. [LogDeclaration]",
+                "42: getLogger method is not called, check that SLF4J is being used. [LogDeclaration]",
         };
 
         verify(checkConfig, getPath("LogDeclaration.java"), expected);
