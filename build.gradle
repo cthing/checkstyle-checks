@@ -30,7 +30,7 @@ dependencies {
     compile "com.puppycrawl.tools:checkstyle:${checkstyle.toolVersion}"
 
     testCompile 'junit:junit:4.12'
-    testCompile 'org.assertj:assertj-core:3.4.1'
+    testCompile 'org.assertj:assertj-core:3.5.1'
 }
 
 compileJava {
