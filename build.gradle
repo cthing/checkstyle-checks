@@ -19,7 +19,7 @@ version = "1.0.0.${buildNumber}"
 group = 'org.cthing'
 
 checkstyle {
-    toolVersion = '6.19'
+    toolVersion = '7.1'
     ignoreFailures = false
     configFile = project.file('dev/checkstyle/checkstyle.xml')
     configProperties['config_loc'] = project.file('dev/checkstyle')
@@ -30,7 +30,7 @@ dependencies {
     compile "com.puppycrawl.tools:checkstyle:${checkstyle.toolVersion}"
 
     testCompile 'junit:junit:4.12'
-    testCompile 'org.assertj:assertj-core:3.5.1'
+    testCompile 'org.assertj:assertj-core:3.5.2'
 }
 
 compileJava {
