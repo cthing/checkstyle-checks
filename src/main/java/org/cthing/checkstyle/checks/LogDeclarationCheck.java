@@ -30,9 +30,6 @@ public class LogDeclarationCheck extends Check {
         Collections.addAll(EXPECTED_MODIFIERS, TokenTypes.LITERAL_PRIVATE, TokenTypes.LITERAL_STATIC, TokenTypes.FINAL);
     }
 
-    public LogDeclarationCheck() {
-    }
-
     @Override
     public int[] getDefaultTokens() {
         return new int[] { TokenTypes.CLASS_DEF };

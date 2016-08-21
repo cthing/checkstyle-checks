@@ -42,9 +42,6 @@ public class SpringDaoAnnotationCheck extends Check {
     private Pattern excludePattern = Pattern.compile("^Abstract.+$");
 
 
-    public SpringDaoAnnotationCheck() {
-    }
-
     /** @property */
     public Pattern getIncludePattern() {
         return this.includePattern;

@@ -15,9 +15,6 @@ import com.puppycrawl.tools.checkstyle.api.TokenTypes;
  */
 public class TestMethodDeclarationCheck extends Check {
 
-    public TestMethodDeclarationCheck() {
-    }
-
     @Override
     public int[] getDefaultTokens() {
         return new int[] { TokenTypes.METHOD_DEF };
