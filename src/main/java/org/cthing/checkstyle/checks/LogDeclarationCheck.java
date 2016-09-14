@@ -8,7 +8,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.puppycrawl.tools.checkstyle.api.Check;
+import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 
@@ -23,7 +23,7 @@ import com.puppycrawl.tools.checkstyle.api.TokenTypes;
  * Where "MyClass" must be replaced with the class enclosing the declaration. Annotations
  * are allowed on the declaration and will be ignored by this check.
  */
-public class LogDeclarationCheck extends Check {
+public class LogDeclarationCheck extends AbstractCheck {
 
     private static final Set<Integer> EXPECTED_MODIFIERS = new HashSet<>();
     static {

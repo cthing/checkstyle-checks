@@ -4,7 +4,7 @@
  */
 package org.cthing.checkstyle.checks;
 
-import com.puppycrawl.tools.checkstyle.api.Check;
+import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 
@@ -13,7 +13,7 @@ import com.puppycrawl.tools.checkstyle.api.TokenTypes;
  * Checks the declaration of a unit test method annotated with {@literal @}Test.
  * The method must be declared {@code public} and have a {@code void} return type.
  */
-public class TestMethodDeclarationCheck extends Check {
+public class TestMethodDeclarationCheck extends AbstractCheck {
 
     @Override
     public int[] getDefaultTokens() {

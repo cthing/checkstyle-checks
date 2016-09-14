@@ -9,7 +9,7 @@ import java.util.regex.PatternSyntaxException;
 
 import org.apache.commons.beanutils.ConversionException;
 
-import com.puppycrawl.tools.checkstyle.api.Check;
+import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 import com.puppycrawl.tools.checkstyle.utils.CommonUtils;
@@ -27,27 +27,29 @@ import com.puppycrawl.tools.checkstyle.utils.CommonUtils;
  *      <li>All public {@code delete*} methods must be marked {@literal @}Transactional(readOnly = false)</li>
  * </ul>
  */
-public class SpringDaoAnnotationCheck extends Check {
+public class SpringDaoAnnotationCheck extends AbstractCheck {
+
+    private Pattern includePattern = Pattern.compile("^.*DaoImpl$");
+
+    private Pattern excludePattern = Pattern.compile("^Abstract.+$");
+
 
     /**
      * Regular expression for the DAO class names to check. Class names included by this pattern
      * can be filtered by the {@link #excludePattern}.
+     *
+     * @return Regular expression for the inclusion
      */
-    private Pattern includePattern = Pattern.compile("^.*DaoImpl$");
-
-    /**
-     * Regular expression for the DAO class names to exclude from checking. This pattern is applied
-     * to the classes included by the {@link #includePattern}.
-     */
-    private Pattern excludePattern = Pattern.compile("^Abstract.+$");
-
-
-    /** @property */
     public Pattern getIncludePattern() {
         return this.includePattern;
     }
 
-    /** @property */
+    /**
+     * Regular expression for the DAO class names to check. Class names included by this pattern
+     * can be filtered by the {@link #excludePattern}.
+     *
+     * @param incPattern  Regular expression for the inclusion
+     */
     public void setIncludePattern(final String incPattern) {
         try {
             this.includePattern = CommonUtils.createPattern(incPattern);
@@ -56,12 +58,22 @@ public class SpringDaoAnnotationCheck extends Check {
         }
     }
 
-    /** @property */
+    /**
+     * Regular expression for the DAO class names to exclude from checking. This pattern is applied
+     * to the classes included by the {@link #includePattern}.
+     *
+     * @return Regular expression for the exclusion
+     */
     public Pattern getExcludePattern() {
         return this.excludePattern;
     }
 
-    /** @property */
+    /**
+     * Regular expression for the DAO class names to exclude from checking. This pattern is applied
+     * to the classes included by the {@link #includePattern}.
+     *
+     * @param exclPattern  Regular expression for the exclusion.
+     */
     public void setExcludePattern(final String exclPattern) {
         try {
             this.excludePattern = CommonUtils.createPattern(exclPattern);

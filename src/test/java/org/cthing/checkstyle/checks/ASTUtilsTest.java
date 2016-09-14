@@ -13,7 +13,7 @@ import org.junit.Test;
 
 import com.puppycrawl.tools.checkstyle.Checker;
 import com.puppycrawl.tools.checkstyle.DefaultConfiguration;
-import com.puppycrawl.tools.checkstyle.api.Check;
+import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 
@@ -25,7 +25,7 @@ import static org.assertj.core.api.Assertions.*;
  */
 public class ASTUtilsTest extends AbstractCheckTestSupport {
 
-    public static class TestCheck extends Check {
+    public static class TestCheck extends AbstractCheck {
 
         public static DetailAST ast;
 
