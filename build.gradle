@@ -21,7 +21,7 @@ group = 'org.cthing'
 description = 'Library of custom checkers for use with Checkstyle.'
 
 checkstyle {
-    toolVersion = '7.1.1'
+    toolVersion = '7.2'
     ignoreFailures = false
     configFile = project.file('dev/checkstyle/checkstyle.xml')
     configProperties['config_loc'] = project.file('dev/checkstyle')
