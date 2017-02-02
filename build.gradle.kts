@@ -82,7 +82,7 @@ tasks.withType(Javadoc::class.java) { task ->
     task.options = opts
 }
 
-extensions.getByType(CheckstyleExtension::class.java).apply {
+configure<CheckstyleExtension> {
     toolVersion = checkstyleVersion
     isIgnoreFailures = false
     configFile = project.file("dev/checkstyle/checkstyle.xml")
@@ -90,7 +90,7 @@ extensions.getByType(CheckstyleExtension::class.java).apply {
     isShowViolations = true
 }
 
-extensions.getByType(FindBugsExtension::class.java).apply {
+configure<FindBugsExtension> {
     toolVersion = "3.0.1"
     isIgnoreFailures = false
     effort = "max"
@@ -99,7 +99,7 @@ extensions.getByType(FindBugsExtension::class.java).apply {
     sourceSets = listOf(convention.getPlugin(JavaPluginConvention::class.java).sourceSets.getByName("main"))
 }
 
-extensions.getByType(JacocoPluginExtension::class.java).apply {
+configure<JacocoPluginExtension> {
     toolVersion = "0.7.8"
 }
 
@@ -132,7 +132,7 @@ fun canSign(): Boolean {
 }
 
 if (canSign()) {
-    extensions.getByType(SigningExtension::class.java).apply {
+    configure<SigningExtension> {
         sign(tasks.getByName("jar"),
              tasks.getByName("sourceJar"),
              tasks.getByName("javadocJar"))
@@ -169,7 +169,7 @@ if (canSign()) {
     pluginManager.apply(PomSigner::class.java)
 }
 
-extensions.configure(PublishingExtension::class.java) {
+configure<PublishingExtension> {
     publications.create<MavenPublication>("mavenJava") {
         from(components.getByName("java"))
 
