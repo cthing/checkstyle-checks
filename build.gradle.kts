@@ -49,7 +49,7 @@ apply {
 }
 
 val buildNumber = if (isOnCIServer()) { System.currentTimeMillis().toString() } else { "0" }
-version = "${properties["semanticVersion"]}.$buildNumber"
+version = "${properties["semanticVersion"]}-$buildNumber"
 group = "org.cthing"
 description = "Library of custom checkers for use with Checkstyle."
 
