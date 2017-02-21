@@ -55,13 +55,13 @@ version = if (isSnapshot()) "$semver-$buildNumber" else semver
 group = "org.cthing"
 description = "Library of custom checkers for use with Checkstyle."
 
-val checkstyleVersion = "7.4"
+val checkstyleVersion = "7.5.1"
 
 dependencies {
     compile("com.puppycrawl.tools:checkstyle:$checkstyleVersion")
 
     testCompile("junit:junit:4.12")
-    testCompile("org.assertj:assertj-core:3.6.1")
+    testCompile("org.assertj:assertj-core:3.6.2")
 }
 
 tasks.withType(JavaCompile::class.java) { task ->
@@ -104,7 +104,7 @@ configure<FindBugsExtension> {
 }
 
 configure<JacocoPluginExtension> {
-    toolVersion = "0.7.8"
+    toolVersion = "0.7.9"
 }
 
 (tasks.getByName("jacocoTestReport") as JacocoReport).apply {
