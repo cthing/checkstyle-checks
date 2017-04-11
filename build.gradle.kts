@@ -69,13 +69,13 @@ tasks.withType<JavaCompile> {
     options.compilerArgs = listOf("-Xlint:all", "-Xlint:-options", "-Werror")
 }
 
-tasks.withType(Jar::class.java) {
+tasks.withType<Jar> {
     manifest.attributes(mapOf("Implementation-Title" to project.name,
                               "Implementation-Vendor" to "C Thing Software",
                               "Implementation-Version" to project.version))
 }
 
-tasks.withType(Javadoc::class.java) {
+tasks.withType<Javadoc> {
     val opts = options as StandardJavadocDocletOptions
     opts.breakIterator(false)
     opts.encoding("UTF-8")
