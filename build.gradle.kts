@@ -143,7 +143,7 @@ if (canSign()) {
 
     task<Sign>("signPom")
 
-    tasks.withType(AbstractPublishToMaven::class.java) {
+    tasks.withType<AbstractPublishToMaven> {
         dependsOn("signJar", "signSourceJar", "signJavadocJar", "signPom")
     }
 
