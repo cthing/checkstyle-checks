@@ -54,13 +54,13 @@ version = if (isSnapshot()) "$semver-$buildNumber" else semver
 group = "org.cthing"
 description = "Library of custom checkers for use with Checkstyle."
 
-val checkstyleVersion = "7.6.1"
+val checkstyleVersion = "7.8.1"
 
 dependencies {
     compile("com.puppycrawl.tools:checkstyle:$checkstyleVersion")
 
     testCompile("junit:junit:4.12")
-    testCompile("org.assertj:assertj-core:3.6.2")
+    testCompile("org.assertj:assertj-core:3.8.0")
 }
 
 tasks.withType<JavaCompile> {
@@ -89,7 +89,7 @@ configure<CheckstyleExtension> {
     toolVersion = checkstyleVersion
     isIgnoreFailures = false
     configFile = project.file("dev/checkstyle/checkstyle.xml")
-    configProperties.put("config_loc", project.file("dev/checkstyle"))
+    configDir = project.file("dev/checkstyle")
     isShowViolations = true
 }
 
@@ -112,7 +112,7 @@ configure<JacocoPluginExtension> {
         xml.isEnabled = false
         csv.isEnabled = false
         html.isEnabled = true
-        html.setDestination(File(buildDir, "reports/jacoco"))
+        html.destination = File(buildDir, "reports/jacoco")
     }
 }
 
