@@ -36,6 +36,16 @@ public class LogDeclarationCheck extends AbstractCheck {
     }
 
     @Override
+    public int[] getRequiredTokens() {
+        return getDefaultTokens();
+    }
+
+    @Override
+    public int[] getAcceptableTokens() {
+        return getDefaultTokens();
+    }
+
+    @Override
     public void visitToken(final DetailAST ast) {
         final DetailAST classIdent = ast.findFirstToken(TokenTypes.IDENT);
         if (classIdent != null) {

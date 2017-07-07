@@ -35,6 +35,16 @@ public class ASTUtilsTest extends AbstractCheckTestSupport {
         }
 
         @Override
+        public int[] getAcceptableTokens() {
+            return getDefaultTokens();
+        }
+
+        @Override
+        public int[] getRequiredTokens() {
+            return getDefaultTokens();
+        }
+
+        @Override
         @SuppressWarnings("AssignmentToStaticFieldFromInstanceMethod")
         public void visitToken(final DetailAST astDetails) {
             ast = astDetails;
