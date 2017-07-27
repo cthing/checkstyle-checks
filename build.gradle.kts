@@ -54,7 +54,7 @@ version = if (isSnapshot()) "$semver-$buildNumber" else semver
 group = "org.cthing"
 description = "Library of custom checkers for use with Checkstyle."
 
-val checkstyleVersion = "8.0"
+val checkstyleVersion = "8.1"
 
 dependencies {
     compile("com.puppycrawl.tools:checkstyle:$checkstyleVersion")
