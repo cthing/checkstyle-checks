@@ -44,12 +44,12 @@ plugins {
 }
 
 val buildNumber = if (isOnCIServer()) System.currentTimeMillis().toString() else "0"
-val semver = property("semanticVersion")
+val semver = property("semanticVersion") as String
 version = if (isSnapshot()) "$semver-$buildNumber" else semver
 group = "org.cthing"
 description = "Library of custom checkers for use with Checkstyle."
 
-val checkstyleVersion = "8.1"
+val checkstyleVersion = "8.2"
 
 dependencies {
     compile("com.puppycrawl.tools:checkstyle:$checkstyleVersion")
@@ -146,13 +146,13 @@ if (canSign()) {
 
     class PomSigner : RuleSource() {
         @Mutate
-        fun genPomRule(@Path("tasks.generatePomFileForMavenJavaPublication") genPomTask: GenerateMavenPom): Unit {
+        fun genPomRule(@Path("tasks.generatePomFileForMavenJavaPublication") genPomTask: GenerateMavenPom) {
             genPomTask.setDestination(genPomTask.project.extra["pomFile"])
         }
 
         @Mutate
         fun signPomRule(@Path("tasks.signPom") signPomTask: Sign,
-                        @Path("tasks.generatePomFileForMavenJavaPublication") genPomTask: GenerateMavenPom): Unit {
+                        @Path("tasks.generatePomFileForMavenJavaPublication") genPomTask: GenerateMavenPom) {
             val pomFile = signPomTask.project.extra["pomFile"] as File
             val pomSigFile = signPomTask.project.extra["pomSigFile"] as File
             signPomTask.dependsOn(genPomTask)
@@ -193,7 +193,7 @@ publishing {
             val rootElem = asElement()
 
             rootElem.addElement("name") { appendText(project.name) }
-            rootElem.addElement("description") { appendText(project.description) }
+            rootElem.addElement("description") { appendText(project.description!!) }
             rootElem.addElement("url") { appendText("https://bitbucket.org/cthing/checktyle-checks") }
             rootElem.addElement("licenses") {
                 addElement("license") {

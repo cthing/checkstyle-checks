@@ -36,7 +36,7 @@ public abstract class AbstractCheckTestSupport {
     private static final class Logger extends DefaultLogger {
 
         private Logger(final OutputStream out) throws UnsupportedEncodingException {
-            super(out, true);
+            super(out, OutputStreamOptions.CLOSE);
         }
 
         @Override
