@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.puppycrawl.tools.checkstyle.Checker;
 import com.puppycrawl.tools.checkstyle.DefaultConfiguration;
@@ -45,7 +45,7 @@ public class ASTUtilsTest extends AbstractCheckTestSupport {
         }
 
         @Override
-        @SuppressWarnings("AssignmentToStaticFieldFromInstanceMethod")
+        @SuppressWarnings({ "AssignmentToStaticFieldFromInstanceMethod", "MethodDoesntCallSuperMethod" })
         public void visitToken(final DetailAST astDetails) {
             ast = astDetails;
         }

@@ -31,6 +31,7 @@ public class TestMethodDeclarationCheck extends AbstractCheck {
     }
 
     @Override
+    @SuppressWarnings("MethodDoesntCallSuperMethod")
     public void visitToken(final DetailAST methodDef) {
         final DetailAST modifiers = methodDef.findFirstToken(TokenTypes.MODIFIERS);
 

@@ -46,6 +46,7 @@ public class LogDeclarationCheck extends AbstractCheck {
     }
 
     @Override
+    @SuppressWarnings("MethodDoesntCallSuperMethod")
     public void visitToken(final DetailAST ast) {
         final DetailAST classIdent = ast.findFirstToken(TokenTypes.IDENT);
         if (classIdent != null) {

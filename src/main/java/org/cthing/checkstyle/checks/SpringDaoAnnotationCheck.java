@@ -98,6 +98,7 @@ public class SpringDaoAnnotationCheck extends AbstractCheck {
     }
 
     @Override
+    @SuppressWarnings("MethodDoesntCallSuperMethod")
     public void visitToken(final DetailAST ast) {
         if (ast.getType() == TokenTypes.CLASS_DEF) {
             checkClass(ast);
