@@ -42,7 +42,7 @@ plugins {
     id("jacoco")
     id("maven-publish")
     id("signing")
-    id("com.github.spotbugs").version("1.4")
+    id("com.github.spotbugs").version("1.6.0")
 }
 
 apply {
@@ -55,7 +55,7 @@ version = if (isSnapshot()) "$semver-$buildNumber" else semver
 group = "org.cthing"
 description = "Library of custom checkers for use with Checkstyle."
 
-val checkstyleVersion = "8.2"
+val checkstyleVersion = "8.4"
 
 dependencies {
     compile("com.puppycrawl.tools:checkstyle:$checkstyleVersion")
@@ -100,7 +100,7 @@ checkstyle {
 }
 
 spotbugs {
-    toolVersion = "3.1.0-RC6"
+    toolVersion = "3.1.0"
     isIgnoreFailures = false
     effort = "max"
     reportLevel = "medium"
