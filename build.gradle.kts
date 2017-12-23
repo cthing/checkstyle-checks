@@ -100,7 +100,7 @@ checkstyle {
 }
 
 spotbugs {
-    toolVersion = "3.1.0"
+    toolVersion = "3.1.1"
     isIgnoreFailures = false
     effort = "max"
     reportLevel = "medium"
