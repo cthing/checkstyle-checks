@@ -32,7 +32,7 @@ fun isSnapshot(): Boolean = property("buildType") == "snapshot"
 buildscript {
     dependencies {
         classpath("org.jetbrains.kotlinx:kotlinx.dom:0.0.10")
-        classpath("org.junit.platform:junit-platform-gradle-plugin:1.0.2")
+        classpath("org.junit.platform:junit-platform-gradle-plugin:1.0.3")
     }
 }
 
@@ -55,18 +55,18 @@ version = if (isSnapshot()) "$semver-$buildNumber" else semver
 group = "org.cthing"
 description = "Library of custom checkers for use with Checkstyle."
 
-val checkstyleVersion = "8.5"
+val checkstyleVersion = "8.7"
 
 dependencies {
     compile("com.puppycrawl.tools:checkstyle:$checkstyleVersion")
 
-    testCompile("org.junit.jupiter:junit-jupiter-api:5.0.2")
-    testCompile("org.junit.jupiter:junit-jupiter-params:5.0.2")
-    testRuntime("org.junit.jupiter:junit-jupiter-engine:5.0.2")
+    testCompile("org.junit.jupiter:junit-jupiter-api:5.0.3")
+    testCompile("org.junit.jupiter:junit-jupiter-params:5.0.3")
+    testRuntime("org.junit.jupiter:junit-jupiter-engine:5.0.3")
     testCompileOnly("org.apiguardian:apiguardian-api:1.0.0")
-    testCompile("org.assertj:assertj-core:3.8.0")
+    testCompile("org.assertj:assertj-core:3.9.0")
 
-    spotbugsPlugins("com.mebigfatguy.fb-contrib:fb-contrib:7.0.5.sb")
+    spotbugsPlugins("com.mebigfatguy.fb-contrib:fb-contrib:7.2.0.sb")
 }
 
 tasks.withType<JavaCompile> {
@@ -116,7 +116,7 @@ tasks.withType<SpotBugsTask> {
 }
 
 jacoco {
-    toolVersion = "0.7.9"
+    toolVersion = "0.8.0"
 }
 
 (tasks["jacocoTestReport"] as JacocoReport).apply {
