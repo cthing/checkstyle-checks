@@ -1,39 +1,11 @@
 import com.github.spotbugs.SpotBugsTask
-import org.gradle.api.publish.maven.MavenPublication
-import org.gradle.api.publish.maven.tasks.AbstractPublishToMaven
-import org.gradle.api.publish.maven.tasks.GenerateMavenPom
-import org.gradle.api.tasks.bundling.Jar
-import org.gradle.api.tasks.compile.JavaCompile
-import org.gradle.api.tasks.javadoc.Javadoc
-import org.gradle.external.javadoc.JavadocMemberLevel
-import org.gradle.external.javadoc.JavadocOutputLevel
-import org.gradle.external.javadoc.StandardJavadocDocletOptions
-import org.gradle.model.Mutate
-import org.gradle.model.Path
-import org.gradle.model.RuleSource
-import org.gradle.plugins.signing.Sign
-import org.gradle.testing.jacoco.plugins.JacocoTaskExtension
-import org.gradle.testing.jacoco.tasks.JacocoReport
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
-import kotlinx.dom.*
-import kotlinx.dom.build.*
 
 // This project is consumed by infrastructure bootstrap code. Therefore it does not use any
 // C Thing Software Gradle plugins and is in the org.cthing domain so it can be consumed as
 // a third party dependency.
-
-fun isOnCIServer(): Boolean = System.getenv("CTHING_CI") != null
-
-fun isSnapshot(): Boolean = property("buildType") == "snapshot"
-
-
-buildscript {
-    dependencies {
-        classpath("org.jetbrains.kotlinx:kotlinx.dom:0.0.10")
-    }
-}
 
 plugins {
     id("java")
@@ -41,27 +13,30 @@ plugins {
     id("jacoco")
     id("maven-publish")
     id("signing")
-    id("com.github.spotbugs").version("1.6.1")
+    id("com.github.spotbugs").version("1.6.2")
 }
 
-val buildNumber = if (isOnCIServer()) System.currentTimeMillis().toString() else "0"
-val semver = property("semanticVersion") as String
-version = if (isSnapshot()) "$semver-$buildNumber" else semver
-group = "org.cthing"
-description = "Library of custom checkers for use with Checkstyle."
+val isCIServer = System.getenv("CTHING_CI") != null
+val isSnapshot = property("org.cthing.build.type") == "snapshot"
 
-val checkstyleVersion = "8.9"
+val buildNumber = if (isCIServer) System.currentTimeMillis().toString() else "0"
+val semver = property("org.cthing.version") as String
+version = if (isSnapshot) "$semver-$buildNumber" else semver
+group = property("org.cthing.group") as String
+description = property("org.cthing.description") as String
+
+val checkstyleVersion = "8.10.1"
 
 dependencies {
     compile("com.puppycrawl.tools:checkstyle:$checkstyleVersion")
 
-    testCompile("org.junit.jupiter:junit-jupiter-api:5.1.1")
-    testCompile("org.junit.jupiter:junit-jupiter-params:5.1.1")
-    testRuntime("org.junit.jupiter:junit-jupiter-engine:5.1.1")
+    testCompile("org.junit.jupiter:junit-jupiter-api:5.2.0")
+    testCompile("org.junit.jupiter:junit-jupiter-params:5.2.0")
+    testRuntime("org.junit.jupiter:junit-jupiter-engine:5.2.0")
     testCompileOnly("org.apiguardian:apiguardian-api:1.0.0")
-    testCompile("org.assertj:assertj-core:3.9.1")
+    testCompile("org.assertj:assertj-core:3.10.0")
 
-    spotbugsPlugins("com.mebigfatguy.fb-contrib:fb-contrib:7.2.1.sb")
+    spotbugsPlugins("com.mebigfatguy.fb-contrib:fb-contrib:7.4.2.sb")
 }
 
 tasks.withType<JavaCompile> {
@@ -72,7 +47,7 @@ tasks.withType<JavaCompile> {
 
 tasks.withType<Jar> {
     manifest.attributes(mapOf("Implementation-Title" to project.name,
-                              "Implementation-Vendor" to "C Thing Software",
+                              "Implementation-Vendor" to project.property("org.cthing.organization.name"),
                               "Implementation-Version" to project.version))
 }
 
@@ -80,7 +55,7 @@ tasks.withType<Javadoc> {
     with (options as StandardJavadocDocletOptions) {
         breakIterator(false)
         encoding("UTF-8")
-        bottom("Copyright &copy; ${SimpleDateFormat("yyyy", Locale.ENGLISH).format(Date())} C Thing Software. All rights reserved.")
+        bottom("Copyright &copy; ${SimpleDateFormat("yyyy", Locale.ENGLISH).format(Date())} ${project.property("org.cthing.organization.name")}. All rights reserved.")
         memberLevel = JavadocMemberLevel.PUBLIC
         outputLevel = JavadocOutputLevel.QUIET
     }
@@ -95,7 +70,7 @@ checkstyle {
 }
 
 spotbugs {
-    toolVersion = "3.1.2"
+    toolVersion = "3.1.5"
     isIgnoreFailures = false
     effort = "max"
     reportLevel = "medium"
@@ -114,7 +89,7 @@ jacoco {
     toolVersion = "0.8.1"
 }
 
-(tasks["jacocoTestReport"] as JacocoReport).apply {
+tasks.withType<JacocoReport> {
     dependsOn("test")
     with (reports) {
         xml.isEnabled = false
@@ -124,65 +99,20 @@ jacoco {
     }
 }
 
-(tasks["test"] as Test).apply {
+tasks.withType<Test> {
     useJUnitPlatform()
 
     extensions.getByType(JacocoTaskExtension::class.java).isAppend = false
 }
 
 val sourceJar by tasks.creating(Jar::class) {
-    from(project.convention.getPlugin<JavaPluginConvention>().sourceSets["main"].allJava)
+    from(java.sourceSets["main"].allSource)
     classifier = "sources"
 }
 
 val javadocJar by tasks.creating(Jar::class) {
     from("javadoc")
     classifier = "javadoc"
-}
-
-fun canSign(): Boolean {
-    return project.hasProperty("signing.keyId")
-            && project.hasProperty("signing.password")
-            && project.hasProperty("signing.secretKeyRingFile")
-}
-
-
-class PomSigner : RuleSource() {
-    @Mutate
-    fun genPomRule(@Path("tasks.generatePomFileForMavenJavaPublication") genPomTask: GenerateMavenPom) {
-        genPomTask.setDestination(genPomTask.project.extra["pomFile"])
-    }
-
-    @Mutate
-    fun signPomRule(@Path("tasks.signPom") signPomTask: Sign,
-                    @Path("tasks.generatePomFileForMavenJavaPublication") genPomTask: GenerateMavenPom) {
-        val pomFile = signPomTask.project.extra["pomFile"] as File
-        val pomSigFile = signPomTask.project.extra["pomSigFile"] as File
-        signPomTask.dependsOn(genPomTask)
-        signPomTask.inputs.file(pomFile)
-        signPomTask.outputs.file(pomSigFile)
-        signPomTask.sign(pomFile)
-    }
-}
-
-data class SignedArtifact(val files: Set<File>, val classifier: String?, val extension: String)
-
-
-if (canSign()) {
-    signing {
-        sign(tasks.getByName("jar"), sourceJar, javadocJar)
-    }
-
-    task<Sign>("signPom")
-
-    tasks.withType<AbstractPublishToMaven> {
-        dependsOn("signJar", "signSourceJar", "signJavadocJar", "signPom")
-    }
-
-    extra["pomFile"] = File(buildDir, "${project.name}-$version.pom")
-    extra["pomSigFile"] = File(buildDir, "${project.name}-$version.pom.asc")
-
-    pluginManager.apply(PomSigner::class.java)
 }
 
 publishing {
@@ -192,58 +122,47 @@ publishing {
         artifact(sourceJar)
         artifact(javadocJar)
 
-        if (canSign()) {
-            val pomSigFile = project.extra["pomSigFile"] as File
-            listOf(SignedArtifact((tasks["signJar"] as Sign).signatureFiles.files, null, "jar.asc"),
-                   SignedArtifact((tasks["signSourceJar"] as Sign).signatureFiles.files, "sources", "jar.asc"),
-                   SignedArtifact((tasks["signJavadocJar"] as Sign).signatureFiles.files, "javadoc", "jar.asc"),
-                   SignedArtifact(setOf(pomSigFile), null, "pom.asc")).forEach { (files, clazzifier, ext) ->
-                files.forEach { file ->
-                    artifact(file) {
-                        classifier = clazzifier
-                        extension = ext
-                    }
+        pom {
+            name.set(project.name)
+            description.set(project.description)
+            url.set("https://bitbucket.org/cthing/${project.name}")
+            licenses {
+                license {
+                    name.set(property("org.cthing.license.name") as String)
+                    url.set(property("org.cthing.license.url") as String)
                 }
             }
-        }
-
-        pom.withXml {
-            val rootElem = asElement()
-
-            rootElem.addElement("name") { appendText(project.name) }
-            rootElem.addElement("description") { appendText(project.description!!) }
-            rootElem.addElement("url") { appendText("https://bitbucket.org/cthing/checktyle-checks") }
-            rootElem.addElement("licenses") {
-                addElement("license") {
-                    addElement("name") { appendText("Apache License, Version 2.0") }
-                    addElement("url") { appendText("http://www.apache.org/licenses/LICENSE-2.0") }
+            developers {
+                developer {
+                    id.set(property("org.cthing.developer.id") as String)
+                    name.set(property("org.cthing.developer.name") as String)
+                    email.set("${property("org.cthing.developer.id")}@cthing.com")
+                    organization.set(property("org.cthing.organization.name") as String)
+                    organizationUrl.set(property("org.cthing.organization.url") as String)
                 }
             }
-            rootElem.addElement("developers") {
-                addElement("developer") {
-                    addElement("id") { appendText("baron") }
-                    addElement("name") { appendText("Baron Roberts") }
-                    addElement("email") { appendText("baron@cthing.com") }
-                    addElement("organization") { appendText("C Thing Software") }
-                    addElement("organizationUrl") { appendText("http://www.cthing.com") }
-                }
-            }
-            rootElem.addElement("scm") {
-                addElement("connection") { appendText("scm:git:git://bitbucket.org/cthing/checktyle-checks.git") }
-                addElement("developerConnection") { appendText("scm:git:ssh://bitbucket.org:cthing/checktyle-checks") }
-                addElement("url") { appendText("https://bitbucket.org/cthing/checktyle-checks/src") }
+            scm {
+                connection.set("scm:git:git://bitbucket.org/cthing/${project.name}.git")
+                developerConnection.set("scm:git:ssh://bitbucket.org:cthing/${project.name}")
+                url.set("https://bitbucket.org/cthing/${project.name}/src")
             }
         }
     }
 
-    val repoUrl = if (isSnapshot()) project.property("nexusSnapshotsUrl") else project.property("nexusCandidatesUrl")
+    val repoUrl = if (isSnapshot) property("nexusSnapshotsUrl") else property("nexusCandidatesUrl")
     if (repoUrl != null) {
         repositories.maven {
             setUrl(repoUrl)
             credentials {
-                username = project.properties["nexusUser"].toString()
-                password = project.properties["nexusPassword"].toString()
+                username = property("nexusUser") as String
+                password = property("nexusPassword") as String
             }
         }
+    }
+}
+
+if (hasProperty("signing.keyId") && hasProperty("signing.password") && hasProperty("signing.secretKeyRingFile")) {
+    signing {
+        sign(publishing.publications["mavenJava"])
     }
 }
