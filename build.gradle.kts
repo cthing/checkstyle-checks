@@ -161,7 +161,7 @@ publishing {
                 setUrl(repoUrl)
                 credentials {
                     username = property("cthing.nexus.user") as String
-                    password = property("thing.nexus.password") as String
+                    password = property("cthing.nexus.password") as String
                 }
             }
         }
