@@ -12,7 +12,7 @@ import org.apache.commons.beanutils.ConversionException;
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
-import com.puppycrawl.tools.checkstyle.utils.CommonUtils;
+import com.puppycrawl.tools.checkstyle.utils.CommonUtil;
 
 
 /**
@@ -52,7 +52,7 @@ public class SpringDaoAnnotationCheck extends AbstractCheck {
      */
     public void setIncludePattern(final String incPattern) {
         try {
-            this.includePattern = CommonUtils.createPattern(incPattern);
+            this.includePattern = CommonUtil.createPattern(incPattern);
         } catch (final PatternSyntaxException ex) {
             throw new ConversionException("unable to parse " + incPattern, ex);
         }
@@ -76,7 +76,7 @@ public class SpringDaoAnnotationCheck extends AbstractCheck {
      */
     public void setExcludePattern(final String exclPattern) {
         try {
-            this.excludePattern = CommonUtils.createPattern(exclPattern);
+            this.excludePattern = CommonUtil.createPattern(exclPattern);
         } catch (final PatternSyntaxException ex) {
             throw new ConversionException("unable to parse " + exclPattern, ex);
         }
@@ -108,7 +108,7 @@ public class SpringDaoAnnotationCheck extends AbstractCheck {
     }
 
     private void checkClass(final DetailAST ast) {
-        if (!isPublic(ast) || !isIncluded(ASTUtils.getIdent(ast))) {
+        if (isNotPublic(ast) || isNotIncluded(ASTUtils.getIdent(ast))) {
             return;
         }
 
@@ -144,12 +144,12 @@ public class SpringDaoAnnotationCheck extends AbstractCheck {
     }
 
     private void checkMethod(final DetailAST ast) {
-        if (!isPublic(ast)) {
+        if (isNotPublic(ast)) {
             return;
         }
 
         final DetailAST classDef = ASTUtils.findEnclosingClass(ast);
-        if ((classDef == null) || !isPublic(classDef) || !isIncluded(ASTUtils.getIdent(classDef))) {
+        if ((classDef == null) || isNotPublic(classDef) || isNotIncluded(ASTUtils.getIdent(classDef))) {
             return;
         }
 
@@ -183,12 +183,12 @@ public class SpringDaoAnnotationCheck extends AbstractCheck {
         }
     }
 
-    private boolean isPublic(final DetailAST decl) {
-        return ASTUtils.findDeclModifiers(decl).contains(TokenTypes.LITERAL_PUBLIC);
+    private boolean isNotPublic(final DetailAST decl) {
+        return !ASTUtils.findDeclModifiers(decl).contains(TokenTypes.LITERAL_PUBLIC);
     }
 
-    private boolean isIncluded(final String className) {
-        return !((this.includePattern != null) && !this.includePattern.matcher(className).matches())
-                && !((this.excludePattern != null) && this.excludePattern.matcher(className).matches());
+    private boolean isNotIncluded(final String className) {
+        return (this.includePattern != null) && !this.includePattern.matcher(className).matches()
+                || (this.excludePattern != null) && this.excludePattern.matcher(className).matches();
     }
 }
