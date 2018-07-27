@@ -20,7 +20,7 @@ import com.puppycrawl.tools.checkstyle.api.TokenTypes;
  *      private static final Logger LOG = LoggerFactory.getLogger(MyClass.class);
  * </pre>
  *
- * Where "MyClass" must be replaced with the class enclosing the declaration. Annotations
+ * <p></p>Where "MyClass" must be replaced with the class enclosing the declaration. Annotations
  * are allowed on the declaration and will be ignored by this check.
  */
 public class LogDeclarationCheck extends AbstractCheck {
