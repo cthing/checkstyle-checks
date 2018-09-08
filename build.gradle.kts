@@ -13,6 +13,7 @@ plugins {
     id("jacoco")
     id("maven-publish")
     id("signing")
+    id("org.gradle.kotlin.kotlin-dsl").version("1.0-rc-3")
     id("com.github.spotbugs").version("1.6.3")
 }
 
@@ -120,7 +121,7 @@ val javadocJar by tasks.creating(Jar::class) {
 
 publishing {
     publications {
-        create<MavenPublication>("mavenJava") {
+        create("mavenJava", MavenPublication::class) {
             from(components["java"])
 
             artifact(sourceJar)
