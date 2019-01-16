@@ -13,7 +13,7 @@ plugins {
     jacoco
     `maven-publish`
     signing
-    id("com.github.spotbugs") version "1.6.5"
+    id("com.github.spotbugs") version "1.6.9"
 }
 
 val isCIServer = System.getenv("CTHING_CI") != null
@@ -24,7 +24,7 @@ version = if (isSnapshot) "$semver-$buildNumber" else semver
 group = property("cthing.group") as String
 description = property("cthing.description") as String
 
-val checkstyleVersion = "8.14"
+val checkstyleVersion = "8.16"
 
 dependencies {
     api("com.puppycrawl.tools:checkstyle:$checkstyleVersion")
@@ -47,7 +47,7 @@ checkstyle {
 }
 
 spotbugs {
-    toolVersion = "3.1.9"
+    toolVersion = "3.1.10"
     isIgnoreFailures = false
     effort = "max"
     reportLevel = "medium"
