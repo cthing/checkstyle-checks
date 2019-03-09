@@ -114,7 +114,7 @@ val javadocJar by tasks.registering(Jar::class) {
 
 publishing {
     publications {
-        register("mavenJava", MavenPublication::class) {
+        register("jar", MavenPublication::class) {
             from(components["java"])
 
             artifact(sourceJar.get())
@@ -152,6 +152,7 @@ publishing {
     if (repoUrl != null) {
         repositories {
             maven {
+                name = "CThingMaven"
                 setUrl(repoUrl)
                 credentials {
                     username = property("cthing.nexus.user") as String
@@ -164,6 +165,6 @@ publishing {
 
 if (hasProperty("signing.keyId") && hasProperty("signing.password") && hasProperty("signing.secretKeyRingFile")) {
     signing {
-        sign(publishing.publications["mavenJava"])
+        sign(publishing.publications["jar"])
     }
 }
