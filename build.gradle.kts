@@ -13,7 +13,7 @@ plugins {
     jacoco
     `maven-publish`
     signing
-    id("com.github.spotbugs") version "1.6.9"
+    id("com.github.spotbugs") version "1.7.1"
 }
 
 val isCIServer = System.getenv("CTHING_CI") != null
@@ -24,16 +24,16 @@ version = if (isSnapshot) "$semver-$buildNumber" else semver
 group = property("cthing.group") as String
 description = property("cthing.description") as String
 
-val checkstyleVersion = "8.17"
+val checkstyleVersion = "8.18"
 
 dependencies {
     api("com.puppycrawl.tools:checkstyle:$checkstyleVersion")
 
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.4.0")
-    testImplementation("org.junit.jupiter:junit-jupiter-params:5.4.0")
-    testImplementation("org.assertj:assertj-core:3.11.1")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.4.1")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:5.4.1")
+    testImplementation("org.assertj:assertj-core:3.12.2")
     testCompileOnly("org.apiguardian:apiguardian-api:1.0.0")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.4.0")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.4.1")
 
     spotbugsPlugins("com.mebigfatguy.fb-contrib:fb-contrib:7.4.3.sb")
 }
@@ -47,7 +47,7 @@ checkstyle {
 }
 
 spotbugs {
-    toolVersion = "3.1.11"
+    toolVersion = "3.1.12"
     isIgnoreFailures = false
     effort = "max"
     reportLevel = "medium"
