@@ -24,7 +24,7 @@ version = if (isSnapshot) "$semver-$buildNumber" else semver
 group = property("cthing.group") as String
 description = property("cthing.description") as String
 
-val checkstyleVersion = "8.25"
+val checkstyleVersion = "8.26"
 
 dependencies {
     api("com.puppycrawl.tools:checkstyle:$checkstyleVersion")
@@ -42,7 +42,7 @@ checkstyle {
     toolVersion = checkstyleVersion
     isIgnoreFailures = false
     configFile = file("dev/checkstyle/checkstyle.xml")
-    configDir = file("dev/checkstyle")
+    configDirectory.set(file("dev/checkstyle"))
     isShowViolations = true
 }
 
