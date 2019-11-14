@@ -5,7 +5,9 @@
 package org.cthing.checkstyle.checks;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
@@ -49,13 +51,11 @@ public final class ASTUtils {
         if (node.getType() == type) {
             return node;
         }
-        for (DetailAST child = node.getFirstChild(); child != null; child = child.getNextSibling()) {
-            final DetailAST foundNode = findType(child, type);
-            if (foundNode != null) {
-                return foundNode;
-            }
-        }
-        return null;
+        return Stream.iterate(node.getFirstChild(), Objects::nonNull, DetailAST::getNextSibling)
+                     .map(child -> findType(child, type))
+                     .filter(Objects::nonNull)
+                     .findFirst()
+                     .orElse(null);
     }
 
     /**
@@ -69,13 +69,11 @@ public final class ASTUtils {
         if (text.equals(node.getText())) {
             return node;
         }
-        for (DetailAST child = node.getFirstChild(); child != null; child = child.getNextSibling()) {
-            final DetailAST foundNode = findText(child, text);
-            if (foundNode != null) {
-                return foundNode;
-            }
-        }
-        return null;
+        return Stream.iterate(node.getFirstChild(), Objects::nonNull, DetailAST::getNextSibling)
+                     .map(child -> findText(child, text))
+                     .filter(Objects::nonNull)
+                     .findFirst()
+                     .orElse(null);
     }
 
     /**

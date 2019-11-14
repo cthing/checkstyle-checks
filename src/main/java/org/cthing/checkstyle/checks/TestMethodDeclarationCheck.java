@@ -4,6 +4,9 @@
  */
 package org.cthing.checkstyle.checks;
 
+import java.util.Objects;
+import java.util.stream.Stream;
+
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
@@ -51,14 +54,10 @@ public class TestMethodDeclarationCheck extends AbstractCheck {
 
     private boolean hasTestAnnotation(final DetailAST modifiers) {
         if (modifiers != null) {
-            for (DetailAST modifier = modifiers.getFirstChild(); modifier != null; modifier = modifier.getNextSibling()) {
-                if (modifier.getType() == TokenTypes.ANNOTATION) {
-                    final DetailAST annotIdent = modifier.findFirstToken(TokenTypes.IDENT);
-                    if ((annotIdent != null) && "Test".equals(annotIdent.getText())) {
-                        return true;
-                    }
-                }
-            }
+            return Stream.iterate(modifiers.getFirstChild(), Objects::nonNull, DetailAST::getNextSibling)
+                         .filter(modifier -> modifier.getType() == TokenTypes.ANNOTATION)
+                         .map(modifier -> modifier.findFirstToken(TokenTypes.IDENT))
+                         .anyMatch(annotIdent -> (annotIdent != null) && "Test".equals(annotIdent.getText()));
         }
         return false;
     }
