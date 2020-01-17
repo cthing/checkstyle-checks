@@ -24,14 +24,14 @@ version = if (isSnapshot) "$semver-$buildNumber" else semver
 group = property("cthing.group") as String
 description = property("cthing.description") as String
 
-val checkstyleVersion = "8.26"
+val checkstyleVersion = "8.28"
 
 dependencies {
     api("com.puppycrawl.tools:checkstyle:$checkstyleVersion")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.5.2")
     testImplementation("org.junit.jupiter:junit-jupiter-params:5.5.2")
-    testImplementation("org.assertj:assertj-core:3.13.2")
+    testImplementation("org.assertj:assertj-core:3.14.0")
     testCompileOnly("org.apiguardian:apiguardian-api:1.0.0")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.5.2")
 
