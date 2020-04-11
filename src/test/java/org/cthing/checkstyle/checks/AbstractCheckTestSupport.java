@@ -11,7 +11,6 @@ import java.io.InputStreamReader;
 import java.io.LineNumberReader;
 import java.io.OutputStream;
 import java.io.PrintStream;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -33,9 +32,10 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public abstract class AbstractCheckTestSupport {
 
+    @SuppressWarnings("MethodDoesntCallSuperMethod")
     private static final class Logger extends DefaultLogger {
 
-        private Logger(final OutputStream out) throws UnsupportedEncodingException {
+        private Logger(final OutputStream out) {
             super(out, OutputStreamOptions.CLOSE);
         }
 
