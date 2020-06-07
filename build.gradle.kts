@@ -14,7 +14,7 @@ plugins {
     jacoco
     `maven-publish`
     signing
-    id("com.github.spotbugs") version "4.0.5"
+    id("com.github.spotbugs") version "4.3.0"
 }
 
 val isCIServer = System.getenv("CTHING_CI") != null
@@ -25,14 +25,14 @@ version = if (isSnapshot) "$semver-$buildNumber" else semver
 group = property("cthing.group") as String
 description = property("cthing.description") as String
 
-val checkstyleVersion = "8.31"
+val checkstyleVersion = "8.33"
 
 dependencies {
     api("com.puppycrawl.tools:checkstyle:$checkstyleVersion")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.6.2")
     testImplementation("org.junit.jupiter:junit-jupiter-params:5.6.2")
-    testImplementation("org.assertj:assertj-core:3.15.0")
+    testImplementation("org.assertj:assertj-core:3.16.1")
     testCompileOnly("org.apiguardian:apiguardian-api:1.0.0")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.6.2")
 
@@ -48,7 +48,7 @@ checkstyle {
 }
 
 spotbugs {
-    toolVersion.set("4.0.1")
+    toolVersion.set("4.0.3")
     ignoreFailures.set(false)
     effort.set(Effort.MAX)
     reportLevel.set(Confidence.MEDIUM)
