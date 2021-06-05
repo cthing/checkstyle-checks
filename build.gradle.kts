@@ -25,7 +25,7 @@ version = if (isSnapshot) "$semver-$buildNumber" else semver
 group = property("cthing.group") as String
 description = property("cthing.description") as String
 
-val checkstyleVersion = "8.41.1"
+val checkstyleVersion = "8.43"
 
 dependencies {
     api("com.puppycrawl.tools:checkstyle:$checkstyleVersion")
