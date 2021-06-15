@@ -14,7 +14,8 @@ plugins {
     jacoco
     `maven-publish`
     signing
-    id("com.github.spotbugs") version "4.7.0"
+    id("com.github.spotbugs") version "4.7.1"
+    id("com.github.ben-manes.versions") version "0.39.0"
 }
 
 val isCIServer = System.getenv("CTHING_CI") != null
@@ -30,11 +31,11 @@ val checkstyleVersion = "8.43"
 dependencies {
     api("com.puppycrawl.tools:checkstyle:$checkstyleVersion")
 
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.1")
-    testImplementation("org.junit.jupiter:junit-jupiter-params:5.7.1")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.2")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:5.7.2")
     testImplementation("org.assertj:assertj-core:3.19.0")
-    testCompileOnly("org.apiguardian:apiguardian-api:1.0.0")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.7.1")
+    testCompileOnly("org.apiguardian:apiguardian-api:1.1.1")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.7.2")
 
     spotbugsPlugins("com.mebigfatguy.sb-contrib:sb-contrib:7.4.7")
 }
@@ -48,7 +49,7 @@ checkstyle {
 }
 
 spotbugs {
-    toolVersion.set("4.2.2")
+    toolVersion.set("4.2.3")
     ignoreFailures.set(false)
     effort.set(Effort.MAX)
     reportLevel.set(Confidence.MEDIUM)
@@ -56,7 +57,14 @@ spotbugs {
 }
 
 jacoco {
-    toolVersion = "0.8.6"
+    toolVersion = "0.8.7"
+}
+
+fun isNonStable(version: String): Boolean {
+    val stableKeyword = listOf("RELEASE", "FINAL", "GA").any { version.toUpperCase().contains(it) }
+    val regex = "^[0-9,.v-]+(-r)?$".toRegex()
+    val isStable = stableKeyword || regex.matches(version)
+    return isStable.not()
 }
 
 tasks {
@@ -92,10 +100,10 @@ tasks {
     withType<JacocoReport>().configureEach {
         dependsOn("test")
         with(reports) {
-            xml.isEnabled = false
-            csv.isEnabled = false
-            html.isEnabled = true
-            html.destination = File(buildDir, "reports/jacoco")
+            xml.required.set(false)
+            csv.required.set(false)
+            html.required.set(true)
+            html.outputLocation.set(File(buildDir, "reports/jacoco"))
         }
     }
 
@@ -105,6 +113,17 @@ tasks {
 
     withType<GenerateModuleMetadata> {
         enabled = false
+    }
+
+    dependencyUpdates {
+        revision = "release"
+        gradleReleaseChannel = "current"
+        outputFormatter = "plain,xml,html"
+        outputDir = File(project.buildDir, "reports/dependencyUpdates").absolutePath
+
+        rejectVersionIf {
+            isNonStable(candidate.version)
+        }
     }
 }
 
