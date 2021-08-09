@@ -11,6 +11,7 @@ import java.io.InputStreamReader;
 import java.io.LineNumberReader;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -90,7 +91,7 @@ public abstract class AbstractCheckTestSupport {
         final DefaultConfiguration treeWalkerConfig = createCheckConfig(TreeWalker.class);
 
         // Ensure that the tests always run with this charset
-        checkerConfig.addAttribute("charset", "iso-8859-1");
+        checkerConfig.addProperty("charset", "iso-8859-1");
         checkerConfig.addChild(treeWalkerConfig);
         treeWalkerConfig.addChild(config);
 
@@ -104,7 +105,9 @@ public abstract class AbstractCheckTestSupport {
      * @return Pathname of the specified test file.
      */
     protected static String getPath(final String filename) {
-        return AbstractCheckTestSupport.class.getResource("/checkstyle/" + filename).getPath();
+        final URL resource = AbstractCheckTestSupport.class.getResource("/checkstyle/" + filename);
+        assertThat(resource).isNotNull();
+        return resource.getPath();
     }
 
     protected void verify(final Configuration config, final String fileName, final String[] expectedLines) throws Exception {
