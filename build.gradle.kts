@@ -14,7 +14,7 @@ plugins {
     jacoco
     `maven-publish`
     signing
-    id("com.github.spotbugs") version "4.7.2"
+    id("com.github.spotbugs") version "4.7.5"
     id("com.github.ben-manes.versions") version "0.39.0"
 }
 
@@ -26,16 +26,16 @@ version = if (isSnapshot) "$semver-$buildNumber" else semver
 group = property("cthing.group") as String
 description = property("cthing.description") as String
 
-val checkstyleVersion = "8.45"
+val checkstyleVersion = "9.0"
 
 dependencies {
     api("com.puppycrawl.tools:checkstyle:$checkstyleVersion")
 
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.2")
-    testImplementation("org.junit.jupiter:junit-jupiter-params:5.7.2")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.0")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:5.8.0")
     testImplementation("org.assertj:assertj-core:3.20.2")
     testCompileOnly("org.apiguardian:apiguardian-api:1.1.2")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.7.2")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.0")
 
     spotbugsPlugins("com.mebigfatguy.sb-contrib:sb-contrib:7.4.7")
 }
