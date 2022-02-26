@@ -1,4 +1,4 @@
-# ![C Thing Software](http://www.cthing.com/images/Logo.gif "C Thing Software") checkstyle-checks
+# ![C Thing Software](https://www.cthing.com/branding/CThingSoftware-57x60.png "C Thing Software") checkstyle-checks
 Library of custom checkers for use with Checkstyle.
 ### License
-[C Thing Software Internal Use Only](http://www.cthing.com/licenses/internal.txt)
+[C Thing Software Internal Use Only](https://www.cthing.com/licenses/internal.txt)
