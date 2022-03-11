@@ -4,8 +4,8 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-// This project is consumed by infrastructure bootstrap code. Therefore it does not use any
-// C Thing Software Gradle plugins and is in the org.cthing domain so it can be consumed as
+// This project is consumed by infrastructure bootstrap code. Therefore, it does not use any
+// C Thing Software Gradle plugins and is in the org.cthing domain, so it can be consumed as
 // a third party dependency.
 
 repositories {
