@@ -62,7 +62,7 @@ To use the check:
 ```
 
 ### Building
-The libray is compiled for Java 11.
+The libray is compiled for Java 17. If a Java 17 toolchain is not available, one will be downloaded.
 
 Gradle is used to build the library:
 ```

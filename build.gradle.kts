@@ -27,6 +27,12 @@ version = if (isSnapshot) "$semver-$buildNumber" else semver
 group = property("cthing.group") as String
 description = property("cthing.description") as String
 
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(project.property("cthing.java.version").toString().toInt()))
+    }
+}
+
 dependencies {
     api(libs.checkstyle)
 
@@ -68,7 +74,7 @@ fun isNonStable(version: String): Boolean {
 
 tasks {
     withType<JavaCompile> {
-        options.release.set(17)
+        options.release.set(project.property("cthing.java.version").toString().toInt())
         options.compilerArgs.addAll(listOf("-Xlint:all", "-Xlint:-options", "-Werror"))
     }
 
