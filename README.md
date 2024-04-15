@@ -1,4 +1,7 @@
 # ![C Thing Software](https://www.cthing.com/branding/CThingSoftware-57x60.png "C Thing Software") checkstyle-checks
+
+[![CI](https://github.com/cthing/checkstyle-checks/actions/workflows/ci.yml/badge.svg)](https://github.com/cthing/checkstyle-checks/actions/workflows/ci.yml)
+
 Library of custom checkers for Checkstyle.
 
 ### Usage
