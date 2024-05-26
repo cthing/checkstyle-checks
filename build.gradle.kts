@@ -1,5 +1,7 @@
 import com.github.spotbugs.snom.Effort
 import com.github.spotbugs.snom.Confidence
+import org.cthing.projectversion.BuildType
+import org.cthing.projectversion.ProjectVersion
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -19,12 +21,16 @@ plugins {
     alias(libs.plugins.versions)
 }
 
-val baseVersion = "3.0.0"
-val isSnapshot = true
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath(libs.cthingProjectVersion)
+    }
+}
 
-val isCIServer = System.getenv("CTHING_CI") != null
-val buildNumber = if (isCIServer) System.currentTimeMillis().toString() else "0"
-version = if (isSnapshot) "$baseVersion-$buildNumber" else baseVersion
+version = ProjectVersion("3.0.0", BuildType.snapshot)
 group = "org.cthing"
 description = "Library of custom checkers for use with Checkstyle."
 
@@ -202,7 +208,8 @@ publishing {
         }
     }
 
-    val repoUrl = if (isSnapshot) findProperty("cthing.nexus.snapshotsUrl") else findProperty("cthing.nexus.candidatesUrl")
+    val repoUrl = if ((version as ProjectVersion).isSnapshotBuild)
+        findProperty("cthing.nexus.snapshotsUrl") else findProperty("cthing.nexus.candidatesUrl")
     if (repoUrl != null) {
         repositories {
             maven {
